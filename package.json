@@ -14,8 +14,9 @@
     "node-sass": "^3.4.2",
     "nunjucks": "^2.2.0",
     "react": "^0.14.7",
+    "react-d3": "^0.4.0",
     "react-dom": "^0.14.7",
-    "react-lite": "0.0.21",
+    "react-simple-pie-chart": "^0.3.1",
     "reset-css": "^2.0.2011012603",
     "uglifyify": "^3.0.1",
     "uglifyjs": "^2.4.10"
@@ -27,21 +28,21 @@
   },
   "browser": {
     "jquery": "./node_modules/jquery/dist/jquery.min.js",
-    "react": "react-lite",
-    "react-dom": "react-lite"
+    "job-data": "./build/data/job-data.min.js"
   },
   "browserify-shim": {
     "jquery": "$"
   },
   "scripts": {
+    "clean": "rm -rf build",
+    "export-data": "mkdir build && mkdir build/data && uglifyjs src/jobs/job-data.js -o build/data/job-data.min.js",
     "sass": "node-sass --output-style compressed -o build/css/ scss/",
     "sass-watch": "node-sass --output-style compressed -w -o build/css/ scss/",
     "bundle": "browserify -t [ babelify --presets [ react ] ]  src/app.js > build/app.js",
     "bundle-min": "browserify -t [ babelify --presets [ react ] ] -g [ uglifyify ] src/app.js > build/app.js",
-    "build": "npm run sass && npm run bundle",
+    "build": "npm run clean && npm run export-data && npm run sass && npm run bundle",
     "start": "node src/server.js",
-    "browsersync": "browser-sync start --reload-delay 1000 --proxy 'http://localhost:3000' --files 'build/css/*.css, build/app.js, src/*/*.html, src/*/*/*.html'",
-    "production": "npm run build && npm run bundle-min"
+    "browsersync": "browser-sync start --reload-delay 1000 --proxy 'http://localhost:3000' --files 'build/css/*.css, build/app.js, src/*/*.html, src/*/*/*.html'"
   },
   "main": "server.js",
   "repository": {
